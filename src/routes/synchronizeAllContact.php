@@ -23,7 +23,7 @@ $app->post('/api/Fleep/synchronizeAllContact', function ($request, $response) {
     
 
     $client = $this->httpClient;
-    $query_str = " https://fleep.io/api/contact/sync/all";
+    $query_str = "https://fleep.io/api/contact/sync/all";
 
     
 

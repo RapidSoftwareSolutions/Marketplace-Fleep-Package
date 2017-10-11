@@ -23,7 +23,7 @@ $app->post('/api/Fleep/editAccountSettings', function ($request, $response) {
     
 
     $client = $this->httpClient;
-    $query_str = "https://fleep.io/api/info/activityinfo";
+    $query_str = "https://fleep.io/api/account/configure";
 
     
 

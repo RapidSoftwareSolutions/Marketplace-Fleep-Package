@@ -12,7 +12,7 @@ $app->post('/api/Fleep/configureConversationWebhook', function ($request, $respo
         $post_data = $validateRes;
     }
 
-    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId','hookKey'=>'hook_key'];
+    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId','hookKey'=>'hook_key','conversationId'=>'conversation_id'];
     $optionalParams = ['hookName'=>'hook_name','outgoingUrl'=>'outgoing_url','outgoingDisabled'=>'outgoing_disabled','fromMessageNumber'=>'from_message_nr'];
     $bodyParams = [
        'json' => ['ticket','from_message_nr','outgoing_disabled','outgoing_url','hook_name','hook_key']
@@ -23,7 +23,7 @@ $app->post('/api/Fleep/configureConversationWebhook', function ($request, $respo
     
 
     $client = $this->httpClient;
-    $query_str = "https://fleep.io/api/alias/sync";
+    $query_str = "https://fleep.io/api/conversation/configure_hook/{$data['conversation_id']}";
 
     
 

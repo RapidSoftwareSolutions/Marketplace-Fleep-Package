@@ -4,7 +4,7 @@ $app->post('/api/Fleep/configureTeam', function ($request, $response) {
 
     $settings = $this->settings;
     $checkRequest = $this->validation;
-    $validateRes = $checkRequest->validate($request, ['ticket','tokenId']);
+    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','teamId']);
 
     if(!empty($validateRes) && isset($validateRes['callback']) && $validateRes['callback']=='error') {
         return $response->withHeader('Content-type', 'application/json')->withStatus(200)->withJson($validateRes);
@@ -13,7 +13,7 @@ $app->post('/api/Fleep/configureTeam', function ($request, $response) {
     }
 
     $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId'];
-    $optionalParams = ['team_name'=>'team_name','addEmails'=>'add_emails','removeEmails'=>'remove_emails','addConversations'=>'add_conversations','removeConversations'=>'remove_conversations','addAccountIds'=>'add_account_ids','removeAccountIds'=>'remove_account_ids','kickAccountIds'=>'kick_account_ids','addAdminIds'=>'add_admin_ids','removeAdminIds'=>'remove_admin_ids','isAutojoin'=>'is_autojoin','isManaged'=>'is_managed'];
+    $optionalParams = ['teamName'=>'team_name','teamId' => 'teamId','addEmails'=>'add_emails','removeEmails'=>'remove_emails','addConversations'=>'add_conversations','removeConversations'=>'remove_conversations','addAccountIds'=>'add_account_ids','removeAccountIds'=>'remove_account_ids','kickAccountIds'=>'kick_account_ids','addAdminIds'=>'add_admin_ids','removeAdminIds'=>'remove_admin_ids','isAutojoin'=>'is_autojoin','isManaged'=>'is_managed'];
     $bodyParams = [
        'json' => ['ticket','team_name','add_emails','remove_emails','add_conversations','remove_conversations','add_account_ids','remove_account_ids','kick_account_ids','add_admin_ids','remove_admin_ids','is_autojoin','is_managed']
     ];
@@ -21,9 +21,10 @@ $app->post('/api/Fleep/configureTeam', function ($request, $response) {
     $data = \Models\Params::createParams($requiredParams, $optionalParams, $post_data['args']);
 
     
+print_r($data);
 
     $client = $this->httpClient;
-    $query_str = "https://fleep.io/api/team/autojoin";
+    $query_str = "https://fleep.io/api/team/configure/{$data['teamId']}";
 
     
 

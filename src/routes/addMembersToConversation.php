@@ -4,7 +4,7 @@ $app->post('/api/Fleep/addMembersToConversation', function ($request, $response)
 
     $settings = $this->settings;
     $checkRequest = $this->validation;
-    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','conversationId']);
+    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','conversationId','email']);
 
     if(!empty($validateRes) && isset($validateRes['callback']) && $validateRes['callback']=='error') {
         return $response->withHeader('Content-type', 'application/json')->withStatus(200)->withJson($validateRes);
@@ -12,8 +12,8 @@ $app->post('/api/Fleep/addMembersToConversation', function ($request, $response)
         $post_data = $validateRes;
     }
 
-    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId','conversationId'=>'conversation_id'];
-    $optionalParams = ['fromMessageNumber'=>'from_message_nr','emails'=>'emails'];
+    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId','email'=>'emails','conversationId'=>'conversation_id'];
+    $optionalParams = ['fromMessageNumber'=>'from_message_nr'];
     $bodyParams = [
        'json' => ['mk_init_mode','from_message_nr','emails','ticket']
     ];

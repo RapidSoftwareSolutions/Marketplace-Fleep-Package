@@ -4,7 +4,7 @@ $app->post('/api/Fleep/setAccountFlag', function ($request, $response) {
 
     $settings = $this->settings;
     $checkRequest = $this->validation;
-    $validateRes = $checkRequest->validate($request, ['ticket','tokenId']);
+    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','clientFlag']);
 
     if(!empty($validateRes) && isset($validateRes['callback']) && $validateRes['callback']=='error') {
         return $response->withHeader('Content-type', 'application/json')->withStatus(200)->withJson($validateRes);
@@ -12,8 +12,8 @@ $app->post('/api/Fleep/setAccountFlag', function ($request, $response) {
         $post_data = $validateRes;
     }
 
-    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId'];
-    $optionalParams = ['clientFlag'=>'client_flag','boolValue'=>'bool_value'];
+    $requiredParams = ['ticket'=>'ticket','clientFlag'=>'client_flag','tokenId'=>'tokenId'];
+    $optionalParams = ['boolValue'=>'bool_value'];
     $bodyParams = [
        'json' => ['ticket','bool_value','client_flag']
     ];

@@ -4,7 +4,7 @@ $app->post('/api/Fleep/removeMembersFromConversation', function ($request, $resp
 
     $settings = $this->settings;
     $checkRequest = $this->validation;
-    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','conversationId','emails']);
+    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','conversationId','email']);
 
     if(!empty($validateRes) && isset($validateRes['callback']) && $validateRes['callback']=='error') {
         return $response->withHeader('Content-type', 'application/json')->withStatus(200)->withJson($validateRes);
@@ -12,7 +12,7 @@ $app->post('/api/Fleep/removeMembersFromConversation', function ($request, $resp
         $post_data = $validateRes;
     }
 
-    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId','conversationId'=>'conversation_id','emails'=>'emails'];
+    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId','conversationId'=>'conversation_id','email'=>'emails'];
     $optionalParams = ['fromMessageNumber'=>'from_message_nr'];
     $bodyParams = [
        'json' => ['ticket','emails','from_message_nr']

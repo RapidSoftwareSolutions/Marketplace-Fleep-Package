@@ -47,6 +47,11 @@ class Params
                         $data[$param] = false;
                     }
 
+                    if(is_numeric($data[$param]))
+                    {
+                        $data[$param] = (int) $data[$param];
+                    }
+
 
                     if ($key == "body"){$requestBody[$key] = $data[$param];}
                     else {$requestBody[$key][$param] = $data[$param];}

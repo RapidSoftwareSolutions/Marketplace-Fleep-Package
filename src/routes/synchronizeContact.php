@@ -4,7 +4,7 @@ $app->post('/api/Fleep/synchronizeContact', function ($request, $response) {
 
     $settings = $this->settings;
     $checkRequest = $this->validation;
-    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','contactIds']);
+    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','contactId']);
 
     if(!empty($validateRes) && isset($validateRes['callback']) && $validateRes['callback']=='error') {
         return $response->withHeader('Content-type', 'application/json')->withStatus(200)->withJson($validateRes);
@@ -12,7 +12,7 @@ $app->post('/api/Fleep/synchronizeContact', function ($request, $response) {
         $post_data = $validateRes;
     }
 
-    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId','contactIds'=>'contact_id'];
+    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId','contactId'=>'contact_id'];
     $optionalParams = [];
     $bodyParams = [
        'json' => ['ticket','contact_id']

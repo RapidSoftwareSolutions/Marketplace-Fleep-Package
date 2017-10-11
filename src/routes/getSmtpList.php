@@ -23,7 +23,7 @@ $app->post('/api/Fleep/getSmtpList', function ($request, $response) {
     
 
     $client = $this->httpClient;
-    $query_str = "https://fleep.io/api/account/smtp/list";
+    $query_str = "https://fleep.io/api/account/mail/list";
 
     
 
@@ -34,12 +34,12 @@ $app->post('/api/Fleep/getSmtpList', function ($request, $response) {
     $requestParams['cookies'] = $cookieJar;
 
     try {
-        $resp = $client->post($query_str, $requestParams);
+        $resp = $client->get($query_str, $requestParams);
         $responseBody = $resp->getBody()->getContents();
 
         if(in_array($resp->getStatusCode(), ['200', '201', '202', '203', '204'])) {
             $result['callback'] = 'success';
-            $result['contextWrites']['to'] = is_array($responseBody) ? $responseBody : json_decode($responseBody);
+            $result['contextWrites']['to'] = $responseBody;
             if(empty($result['contextWrites']['to'])) {
                 $result['contextWrites']['to']['status_msg'] = "Api return no results";
             }

@@ -4,7 +4,7 @@ $app->post('/api/Fleep/createVideoCall', function ($request, $response) {
 
     $settings = $this->settings;
     $checkRequest = $this->validation;
-    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','conversationId']);
+    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','conversationId','provider']);
 
     if(!empty($validateRes) && isset($validateRes['callback']) && $validateRes['callback']=='error') {
         return $response->withHeader('Content-type', 'application/json')->withStatus(200)->withJson($validateRes);
@@ -12,8 +12,8 @@ $app->post('/api/Fleep/createVideoCall', function ($request, $response) {
         $post_data = $validateRes;
     }
 
-    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId','conversationId'=>'conversation_id'];
-    $optionalParams = ['provider'=>'provider','roomName'=>'room_name'];
+    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId','provider'=>'provider','conversationId'=>'conversation_id'];
+    $optionalParams = ['roomName'=>'room_name'];
     $bodyParams = [
        'json' => ['ticket','room_name','provider']
     ];

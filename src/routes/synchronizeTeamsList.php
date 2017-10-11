@@ -4,7 +4,7 @@ $app->post('/api/Fleep/synchronizeTeamsList', function ($request, $response) {
 
     $settings = $this->settings;
     $checkRequest = $this->validation;
-    $validateRes = $checkRequest->validate($request, ['ticket','tokenId']);
+    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','conversationId']);
 
     if(!empty($validateRes) && isset($validateRes['callback']) && $validateRes['callback']=='error') {
         return $response->withHeader('Content-type', 'application/json')->withStatus(200)->withJson($validateRes);
@@ -12,7 +12,7 @@ $app->post('/api/Fleep/synchronizeTeamsList', function ($request, $response) {
         $post_data = $validateRes;
     }
 
-    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId'];
+    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId','conversationId'=>'conversation_id'];
     $optionalParams = ['teamIds'=>'team_ids'];
     $bodyParams = [
        'json' => ['ticket','team_ids']

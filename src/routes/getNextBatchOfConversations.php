@@ -4,7 +4,7 @@ $app->post('/api/Fleep/getNextBatchOfConversations', function ($request, $respon
 
     $settings = $this->settings;
     $checkRequest = $this->validation;
-    $validateRes = $checkRequest->validate($request, ['ticket','tokenId']);
+    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','conversationIds']);
 
     if(!empty($validateRes) && isset($validateRes['callback']) && $validateRes['callback']=='error') {
         return $response->withHeader('Content-type', 'application/json')->withStatus(200)->withJson($validateRes);
@@ -12,8 +12,8 @@ $app->post('/api/Fleep/getNextBatchOfConversations', function ($request, $respon
         $post_data = $validateRes;
     }
 
-    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId'];
-    $optionalParams = ['conversationIds'=>'conversation_ids','mkInitMode'=>'mk_init_mode'];
+    $requiredParams = ['ticket'=>'ticket','conversationIds'=>'conversation_ids','tokenId'=>'tokenId'];
+    $optionalParams = ['mkInitMode'=>'mk_init_mode'];
     $bodyParams = [
        'json' => ['mk_init_mode','conversation_ids','ticket']
     ];

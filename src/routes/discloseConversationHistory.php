@@ -4,7 +4,7 @@ $app->post('/api/Fleep/discloseConversationHistory', function ($request, $respon
 
     $settings = $this->settings;
     $checkRequest = $this->validation;
-    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','conversationId']);
+    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','conversationId','email']);
 
     if(!empty($validateRes) && isset($validateRes['callback']) && $validateRes['callback']=='error') {
         return $response->withHeader('Content-type', 'application/json')->withStatus(200)->withJson($validateRes);
@@ -12,8 +12,8 @@ $app->post('/api/Fleep/discloseConversationHistory', function ($request, $respon
         $post_data = $validateRes;
     }
 
-    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId','conversationId'=>'conversation_id'];
-    $optionalParams = ['emails'=>'emails','messageNumber'=>'message_nr','fromMessageNumber'=>'from_message_nr'];
+    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId','email'=>'emails','conversationId'=>'conversation_id'];
+    $optionalParams = ['messageNumber'=>'message_nr','fromMessageNumber'=>'from_message_nr'];
     $bodyParams = [
        'json' => ['ticket','from_message_nr','message_nr','emails']
     ];

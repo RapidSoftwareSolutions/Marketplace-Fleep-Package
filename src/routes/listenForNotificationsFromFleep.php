@@ -4,7 +4,7 @@ $app->post('/api/Fleep/listenForNotificationsFromFleep', function ($request, $re
 
     $settings = $this->settings;
     $checkRequest = $this->validation;
-    $validateRes = $checkRequest->validate($request, ['ticket','tokenId']);
+    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','eventHorizon']);
 
     if(!empty($validateRes) && isset($validateRes['callback']) && $validateRes['callback']=='error') {
         return $response->withHeader('Content-type', 'application/json')->withStatus(200)->withJson($validateRes);
@@ -12,8 +12,8 @@ $app->post('/api/Fleep/listenForNotificationsFromFleep', function ($request, $re
         $post_data = $validateRes;
     }
 
-    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId'];
-    $optionalParams = ['eventHorizon'=>'event_horizon','wait'=>'wait','downloadUrl'=>'download_url'];
+    $requiredParams = ['ticket'=>'ticket','eventHorizon'=>'event_horizon','tokenId'=>'tokenId'];
+    $optionalParams = ['wait'=>'wait','downloadUrl'=>'download_url'];
     $bodyParams = [
        'json' => ['download_url','wait','event_horizon','ticket']
     ];

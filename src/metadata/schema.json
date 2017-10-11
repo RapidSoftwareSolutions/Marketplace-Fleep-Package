@@ -606,7 +606,7 @@
                 }
             ],
             "vendorRequest": {
-                "url": "https:\/\/fleep.io\/api\/info\/activityinfo",
+                "url": "https://fleep.io/api/account/configure",
                 "method": "post",
                 "requestParameters": [
                     {
@@ -920,7 +920,7 @@
                         "info": "Single lookup string."
                     },
                     "info": "List of lookup strings.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "lookup_list"
                     }
@@ -934,7 +934,7 @@
                         "info": "Single accountId to ignore."
                     },
                     "info": "List of accountId's to ignore.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "ignore_list"
                     }
@@ -994,7 +994,7 @@
                     "name": "registrationCode",
                     "type": "String",
                     "info": "Registration code.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "registration_code"
                     }
@@ -1003,7 +1003,7 @@
                     "name": "registrationMail",
                     "type": "String",
                     "info": "Registration mail.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "registration_mail"
                     }
@@ -1056,7 +1056,7 @@
                     "name": "clientFlag",
                     "type": "String",
                     "info": "Name of the flag to set or clear.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "client_flag"
                     }
@@ -1081,164 +1081,6 @@
                             "ticket",
                             "bool_value",
                             "client_flag"
-                        ]
-                    }
-                ]
-            },
-            "callbacks": [
-                {
-                    "name": "error",
-                    "info": "Error"
-                },
-                {
-                    "name": "success",
-                    "info": "Success"
-                }
-            ]
-        },
-        {
-            "name": "smtpConfigure",
-            "description": "Use this method for configure smtp server.",
-            "args": [
-                {
-                    "name": "ticket",
-                    "type": "String",
-                    "info": "Must be sent as parameter to all subsequent api calls.",
-                    "required": true
-                },
-                {
-                    "name": "tokenId",
-                    "type": "String",
-                    "info": "Token id from loginAccount endpoint.",
-                    "required": true
-                },
-                {
-                    "name": "smtpId",
-                    "type": "String",
-                    "info": "Smtp id.",
-                    "required": false,
-                    "vendorSchema": {
-                        "name": "smtp_id"
-                    }
-                },
-                {
-                    "name": "smtpUsername",
-                    "type": "String",
-                    "info": "Smtp username.",
-                    "required": false,
-                    "vendorSchema": {
-                        "name": "smtp_username"
-                    }
-                },
-                {
-                    "name": "smtpPassword",
-                    "type": "String",
-                    "info": "Smtp password.",
-                    "required": false,
-                    "vendorSchema": {
-                        "name": "smtp_password"
-                    }
-                },
-                {
-                    "name": "smtpHost",
-                    "type": "String",
-                    "info": "Smtp host.",
-                    "required": false,
-                    "vendorSchema": {
-                        "name": "smtp_host"
-                    }
-                },
-                {
-                    "name": "smtp_port",
-                    "type": "String",
-                    "info": "Smtp port.Set to -1 to remove.",
-                    "required": false,
-                    "vendorSchema": {
-                        "name": "smtp_port"
-                    }
-                },
-                {
-                    "name": "isRemoved",
-                    "type": "Select",
-                    "options": [
-                        "true",
-                        "false"
-                    ],
-                    "info": "Is removed.Set True to remove.",
-                    "required": false,
-                    "vendorSchema": {
-                        "name": "is_removed"
-                    }
-                },
-                {
-                    "name": "isDefault",
-                    "type": "Select",
-                    "options": [
-                        "true",
-                        "false"
-                    ],
-                    "info": "Set True to set as default.",
-                    "required": false,
-                    "vendorSchema": {
-                        "name": "is_default"
-                    }
-                }
-            ],
-            "vendorRequest": {
-                "url": "https:\/\/fleep.io\/api\/account\/smtp\/configure",
-                "method": "post",
-                "requestParameters": [
-                    {
-                        "type": "json",
-                        "parameters": [
-                            "ticket",
-                            "smtp_id",
-                            "smtp_username",
-                            "smtp_password",
-                            "smtp_host",
-                            "smtp_port",
-                            "is_removed",
-                            "is_default"
-                        ]
-                    }
-                ]
-            },
-            "callbacks": [
-                {
-                    "name": "error",
-                    "info": "Error"
-                },
-                {
-                    "name": "success",
-                    "info": "Success"
-                }
-            ]
-        },
-        {
-            "name": "getSmtpList",
-            "description": "Get notification_id for further requests.",
-            "args": [
-                {
-                    "name": "ticket",
-                    "type": "String",
-                    "info": "Must be sent as parameter to all subsequent api calls.",
-                    "required": true
-                },
-                {
-                    "name": "tokenId",
-                    "type": "String",
-                    "info": "Token id from loginAccount endpoint.",
-                    "required": true
-                }
-            ],
-            "vendorRequest": {
-                "url": "https:\/\/fleep.io\/api\/account\/smtp\/list",
-                "method": "post",
-                "requestParameters": [
-                    {
-                        "type": "json",
-                        "parameters": [
-                            "ticket"
                         ]
                     }
                 ]
@@ -1353,7 +1195,7 @@
                     "name": "sectionId",
                     "type": "String",
                     "info": "Section id.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "section_id"
                     }
@@ -1388,7 +1230,8 @@
                             "task_limit",
                             "conversation_id",
                             "task_weight",
-                            "task_limit"
+                            "task_limit",
+                            "section_id"
                         ]
                     }
                 ]
@@ -1587,7 +1430,7 @@
                 },
                 {
                     "name": "imageFile",
-                    "type": "String",
+                    "type": "File",
                     "info": "Image for avatar.",
                     "required": true
                 }
@@ -1635,7 +1478,7 @@
                     "name": "eventHorizon",
                     "type": "Number",
                     "info": "Latest event client has seen.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "event_horizon"
                     }
@@ -1872,7 +1715,7 @@
                         "info": "Single conversation id."
                     },
                     "info": "List of conversation id's to synchronize.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "conversation_ids"
                     }
@@ -1919,7 +1762,7 @@
         },
         {
             "name": "addMembersToConversation",
-            "description": "Add members to the conversation.",
+            "description": "Add member to the conversation.",
             "args": [
                 {
                     "name": "ticket",
@@ -1952,15 +1795,10 @@
                     }
                 },
                 {
-                    "name": "emails",
-                    "type": "List",
-                    "structure": {
-                        "name": "email",
-                        "type": "String",
-                        "info": "Single email."
-                    },
-                    "info": "List of email addresses like on email To: line.",
-                    "required": false,
+                    "name": "email",
+                    "type": "String",
+                    "info": "Email address.",
+                    "required": true,
                     "vendorSchema": {
                         "name": "emails"
                     }
@@ -1975,7 +1813,7 @@
                         "parameters": [
                             "mk_init_mode",
                             "from_message_nr",
-                            "emails",
+                            "email",
                             "ticket"
                         ]
                     }
@@ -2383,7 +2221,7 @@
                     "name": "provider",
                     "type": "String",
                     "info": "Call service provider (appear.in).",
-                    "required": false
+                    "required": true
                 },
                 {
                     "name": "roomName",
@@ -2504,15 +2342,10 @@
                     }
                 },
                 {
-                    "name": "emails",
-                    "type": "List",
-                    "structure": {
-                        "name": "email",
-                        "type": "String",
-                        "info": "Single email."
-                    },
-                    "info": "List of email addresses like on email To: line.",
-                    "required": false,
+                    "name": "email",
+                    "type": "String",
+                    "info": "Email addresses.",
+                    "required": true,
                     "vendorSchema": {
                         "name": "emails"
                     }
@@ -2896,7 +2729,7 @@
                     "name": "messageNumber",
                     "type": "Number",
                     "info": "Disclose up to this message.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "message_nr"
                     }
@@ -2985,14 +2818,9 @@
                     }
                 },
                 {
-                    "name": "emails",
-                    "type": "List",
-                    "structure": {
-                        "name": "email",
-                        "type": "String",
-                        "info": "Single email."
-                    },
-                    "info": "List of email addresses like on email To: line.",
+                    "name": "email",
+                    "type": "String",
+                    "info": "Email address.",
                     "required": true,
                     "vendorSchema": {
                         "name": "emails"
@@ -3043,7 +2871,7 @@
                 {
                     "name": "conversationId",
                     "type": "String",
-                    "info": "Leave conversation by id.",
+                    "info": "Conversation by id.",
                     "required": true,
                     "vendorSchema": {
                         "name": "conversation_id"
@@ -3884,6 +3712,15 @@
                     "required": true
                 },
                 {
+                    "name": "conversationId",
+                    "type": "String",
+                    "info": "Conversation by id.",
+                    "required": true,
+                    "vendorSchema": {
+                        "name": "conversation_id"
+                    }
+                },
+                {
                     "name": "teamIds",
                     "type": "List",
                     "structure": {
@@ -4068,7 +3905,7 @@
                     "name": "messageNumber",
                     "type": "Number",
                     "info": "Number of pinned message.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "message_nr"
                     }
@@ -4077,7 +3914,7 @@
                     "name": "toConversationId",
                     "type": "String",
                     "info": "Destination conversation.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "to_conv_id"
                     }
@@ -4147,7 +3984,7 @@
                     "name": "messageNumber",
                     "type": "Number",
                     "info": "Number of pinned message.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "message_nr"
                     }
@@ -4226,7 +4063,7 @@
                     "name": "messageNumber",
                     "type": "Number",
                     "info": "Number of pinned message.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "message_nr"
                     }
@@ -4314,7 +4151,7 @@
                     "name": "messageNumber",
                     "type": "Number",
                     "info": "Client read horizon. Last message number that we have shown to user. We update database and send notifications to other connected clients if it is larger than current value in database.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "message_nr"
                     }
@@ -4723,7 +4560,7 @@
                         "info": "Keyword for search"
                     },
                     "info": "Query search for content.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "format": "toString:{ }"
                     }
@@ -5081,12 +4918,18 @@
                 },
                 {
                     "name": "contacts",
-                    "type": "List",
-                    "structure": {
-                        "name": "contact",
-                        "type": "JSON",
-                        "info": "ContactImport objects."
+                    "type": "Array",
+                    "structure": [{
+                        "name": "addr_full",
+                        "type": "String",
+                        "info": "Contact email."
                     },
+                        {
+                            "name": "addr_descr",
+                            "type": "String",
+                            "info": "Contact name."
+                        }
+                    ],
                     "info": "List of ContactImport objects.",
                     "required": true,
                     "vendorSchema": {
@@ -5135,14 +4978,9 @@
                     "required": true
                 },
                 {
-                    "name": "contactIds",
-                    "type": "List",
-                    "structure": {
-                        "name": "contactId",
-                        "type": "JSON",
-                        "info": "Single accountId to synchronize."
-                    },
-                    "info": "List of contactIds to synchronize.",
+                    "name": "contactId",
+                    "type": "String",
+                    "info": "Id of contact to synchronize.",
                     "required": true,
                     "vendorSchema": {
                         "name": "contact_id"
@@ -5269,7 +5107,7 @@
                 }
             ],
             "vendorRequest": {
-                "url": " https:\/\/fleep.io\/api\/contact\/sync\/all",
+                "url": "https:\/\/fleep.io\/api\/contact\/sync\/all",
                 "method": "post",
                 "requestParameters": [
                     {
@@ -5318,7 +5156,7 @@
                         "info": "Single contact id."
                     },
                     "info": "List of account_ids to synchronize.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "contacts"
                     }
@@ -5478,7 +5316,7 @@
                     "name": "fileName",
                     "type": "String",
                     "info": "Name for files.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "file_name"
                     }
@@ -5525,9 +5363,15 @@
                 "method": "post",
                 "requestParameters": [
                     {
-                        "type": "query",
+                        "type": "json",
                         "parameters": [
-                            "ticket"
+                            "ticket",
+                            "file_url",
+                            "file_name",
+                            "file_size",
+                            "fileOrigin",
+                            "conversationId",
+                            "uploadId"
                         ]
                     }
                 ]
@@ -5577,7 +5421,7 @@
                         "type": "json",
                         "parameters": [
                             "ticket",
-                            "email"
+                            "emails"
                         ]
                     }
                 ]
@@ -5750,6 +5594,15 @@
                     "required": true
                 },
                 {
+                    "name": "conversationId",
+                    "type": "String",
+                    "info": "Conversation by id.",
+                    "required": true,
+                    "vendorSchema": {
+                        "name": "conversation_id"
+                    }
+                },
+                {
                     "name": "hookKey",
                     "type": "String",
                     "info": "Hook key.",
@@ -5800,7 +5653,7 @@
                 }
             ],
             "vendorRequest": {
-                "url": "https:\/\/fleep.io\/api\/alias\/sync",
+                "url": "https://fleep.io/api/conversation/configure_hook/{$data['conversation_id']}",
                 "method": "post",
                 "requestParameters": [
                     {
@@ -5879,6 +5732,15 @@
                     }
                 },
                 {
+                    "name": "conversationId",
+                    "type": "String",
+                    "info": "Conversation by id.",
+                    "required": true,
+                    "vendorSchema": {
+                        "name": "conversation_id"
+                    }
+                },
+                {
                     "name": "outgoingUrl",
                     "type": "String",
                     "info": "URL for outgoing messages only relevant for plain and slack hooks.",
@@ -5929,7 +5791,7 @@
                 }
             ],
             "vendorRequest": {
-                "url": "https:\/\/fleep.io\/api\/alias\/sync",
+                "url": "https://fleep.io/api/conversation/create_hook/{$data['conversation_id']}",
                 "method": "post",
                 "requestParameters": [
                     {
@@ -6143,7 +6005,13 @@
                     "required": true
                 },
                 {
-                    "name": "team_name",
+                    "name": "teamId",
+                    "type": "String",
+                    "info": "Id of team.",
+                    "required": true
+                },
+                {
+                    "name": "teamName",
                     "type": "String",
                     "info": "Team name.",
                     "required": false,
@@ -6305,7 +6173,7 @@
                 }
             ],
             "vendorRequest": {
-                "url": "https:\/\/fleep.io\/api\/team\/autojoin",
+                "url": "https://fleep.io/api/team/configure/{$data['teamId']}",
                 "method": "post",
                 "requestParameters": [
                     {
@@ -6359,7 +6227,7 @@
                     "name": "teamName",
                     "type": "String",
                     "info": "Team name.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "team_name"
                     }

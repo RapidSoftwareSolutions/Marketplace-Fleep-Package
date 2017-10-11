@@ -15,7 +15,7 @@ $app->post('/api/Fleep/addEmailAlias', function ($request, $response) {
     $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId','email'=>'emails'];
     $optionalParams = [];
     $bodyParams = [
-       'json' => ['ticket','email']
+       'json' => ['ticket','emails']
     ];
 
     $data = \Models\Params::createParams($requiredParams, $optionalParams, $post_data['args']);

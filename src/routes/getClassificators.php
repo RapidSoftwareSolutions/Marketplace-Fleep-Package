@@ -37,7 +37,7 @@ $app->post('/api/Fleep/getClassificators', function ($request, $response) {
 
         if(in_array($resp->getStatusCode(), ['200', '201', '202', '203', '204'])) {
             $result['callback'] = 'success';
-            $result['contextWrites']['to'] = $responseBody;
+            $result['contextWrites']['to'] = array('results' => $responseBody);
             if(empty($result['contextWrites']['to'])) {
                 $result['contextWrites']['to']['status_msg'] = "Api return no results";
             }

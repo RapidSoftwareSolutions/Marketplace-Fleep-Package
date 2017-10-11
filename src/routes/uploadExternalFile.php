@@ -4,7 +4,7 @@ $app->post('/api/Fleep/uploadExternalFile', function ($request, $response) {
 
     $settings = $this->settings;
     $checkRequest = $this->validation;
-    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','fileUrl']);
+    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','fileUrl','fileName']);
 
     if(!empty($validateRes) && isset($validateRes['callback']) && $validateRes['callback']=='error') {
         return $response->withHeader('Content-type', 'application/json')->withStatus(200)->withJson($validateRes);
@@ -15,7 +15,7 @@ $app->post('/api/Fleep/uploadExternalFile', function ($request, $response) {
     $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId','fileUrl'=>'file_url'];
     $optionalParams = ['fileName'=>'file_name','fileSize'=>'file_size','fileOrigin'=>'file_origin','conversationId'=>'conversation_id','uploadId'=>'upload_id'];
     $bodyParams = [
-       'query' => ['ticket']
+       'json' => ['ticket','file_url','file_name','file_size','file_origin','conversation_id','upload_id']
     ];
 
     $data = \Models\Params::createParams($requiredParams, $optionalParams, $post_data['args']);
