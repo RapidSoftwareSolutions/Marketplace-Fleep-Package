@@ -960,3 +960,454 @@ Synchronize team.
 | teamId        | String| Team id.
 | conversationId| String| ConversationId to prove team access.
 
+
+#Info about object from method response.
+
+##ActivityInfo
+
+```
+mk_rec_type         text = 'activity'
+   conversation_id     text            - Conversation
+   account_id          text            - Who is writing
+   is_writing          boolean (o)     - true - writing, false - cancel
+   read_message_nr     bigint (o)      - read horizon for this user
+   join_message_nr     bigint (o)      - messsage_nr from which user sees the conversation
+   activity_time       bigint          - when this activity happend
+   ```
+##BillingInfo   
+
+```mk_rec_type                     text = 'billing'
+   organisation_id                 uuid
+   country_code                    text
+   billing_details                 text
+   billing_email                   text
+   vat_number                      text
+   plan_id                         text
+   account_quantity                integer
+   payment_method_image_url        text
+   payment_method_description      text
+   payment_method_expiration_date  text
+   subscription_status             text                    - empty or "confirmed"
+   discount                        numeric                 - discount % between 0 and 1 (where applicable)
+   next_billing_date               bigint
+   ```
+##ContactInfo
+   ```mk_rec_type         text = 'contact'
+      account_id          text                - Account ID
+      email               text (o)            - Account email
+      display_name        text (o)            - name to be displayed in conversations
+      mk_account_status   text                - See Classificators
+      is_hidden_for_add   boolean (o)         - can this contact be shown when adding contacts
+      mk_email_interval   text (o)            - filled only if requester account_id matches
+      avatar_urls         text (o)            - json contains urls to avatar thumbnails
+      contact_name        text (o)            - Contact name visible only to contactlist owner
+      phone_nr            text (o)            - Phone phone nr visible only to contactlist owner
+      client_flags        text (o)            - List of flag names that are true for client
+      is_full_privacy     boolean (o)         - true if don't want to send and receive
+                                                conversation read level and writing status
+      activity_time       bigint (o)          - when user send or read something in fleep
+      dialog_id           text (o)            - id of the latest dialog with this user
+      alias_account_ids   text[] (o)          - for owner account only list of it's alias account ids
+      trial_end_time      integer (o)         - time whne trial ends, 0 for premium users
+      fleep_address       text (o)            - users fleep id
+      is_newsletter_disabled  boolean (o)     - enable/disbale newsetter sending
+      sort_rank           integer (o)         - show higher ranking contacts on top when filtering
+      export_progress     float (o)           - history export progress, between 0 (started) and 1 (ready)
+      export_files        text[] (o)          - list of JSON encoded export files
+      client_settings     text (o)            - JSON encoded client settings
+      has_password        boolean (o)         - Has user set password (or using google single sign in)
+      is_premium          boolean (o)         - Owner only. True if premium user.
+      full_name           text (o)            - Users own display name (without my modifications)
+      is_automute_enabled boolean (o)         - Owner only. Are incoming emails from new sources automuted
+      connected_email     text (o)            - Email linking email address if set
+      activated_time      bigint (o)          - when user account was activated (email confirmed)
+      organisation_id     uuid (o)            - contact is active member of this organisation
+      organisation_name   text (o)            - name of the organisation contact is in
+      is_org_admin        boolean (o)         - is user admin of the organisation
+      storage_used_bytes  integer (o)         - number of bytes used in users file storage
+      storage_quota_bytes integer (o)         - number of bytes allowed for user storage
+   ```
+##ConvInfo
+   
+ ```
+ mk_rec_type                 text = 'conv'
+ mk_init_mode                text            - ic_header - just header
+                                               ic_tiny - minimal init
+                                               ic_full - full init
+ conversation_id             text            - mostly needed for conversation create case
+ creator_id                  text            - id of the account who created the conversation
+ join_message_nr             bigint          - message_nr when member was added to the conversation
+                                               Useful for determining if backward scroll is still possible
+ read_message_nr             bigint          - Current truth about read horizon. Normally it only
+                                               increased but sometimes user may mark some messages
+                                               unread.
+ my_message_nr               bigint          - next message that mentions me
+ show_message_nr             bigint          - number of latest visible message
+ last_message_nr             bigint          - last message nr in the conversation or last message
+                                               that is shown in case of leaving conversation
+ inbox_message_nr            bigint          - point to the message to be displayed in conversation list
+ delete_message_nr           bigint          - content before that message has been deleted by user
+ disclose_message_nr         bigint          - earliest disclose done for this use
+ can_post                    boolean         - true if profile is still in conevrsation
+                                               and can post to this conversation
+ topic                       text            - topic. Returned when changed
+ members                     text[]          - list of account ids who are currently joined
+ leavers                     text[]          - list of account ids who have left conversation
+ guests                      text[]          - list of account ids who are addes as guests
+ admins                      text[]          - list of account ids who are admins in managed conversation
+ last_message_time           bigint          - unix timestamp of last message in flow
+ mk_alert_level              text            - should alerting from this conversation be supressed
+ file_horizon                bigint          - used in case all files are not sent during init
+                                               pass it to api/conversation/sync_files call as
+                                               from_message_nr
+ pin_horizon                 bigint          - used in case all pins are not sent during init
+                                               pass it to api/conversation/sync_pinboard call as
+                                               from_message_nr
+ task_horizon                bigint          - used to sync all tasks including archived tasks to client
+ hide_message_nr             bigint          - if conversation last message nr is equal or smaller than
+                                               hide message nr then conversation is to be hidden in client
+ fw_message_nr               bigint          - when syncing conversation forward mesage nr shows
+                                               forward progress and all is synced when it equals last_message_nr
+ bw_message_nr               bigint          - when syncing conversation backward message nr shows
+                                               backward progress and all is synced when it equals join_message_nr
+ unread_count                bigint          - number of unread messages in conversation
+ last_inbox_nr               bigint          - inbox number of last alerting inbox message. Can be used locally
+                                               to reduce unread count while server asyncronously does the same
+ inbox_time                  bigint          - weight of the conversation for sorting in conversation list
+                                               and left menu
+ is_deleted                  boolean         - If set to true by server conversation must be deleted from
+                                               client cache.
+ is_tiny                     boolean         - stream contains minimal amount of information needed for displaying
+                                               conversation in list
+ is_init                     boolean         - server requests cache reset for this conversation. Used for changes
+                                               like disclose and rejoin
+ teams                       text[]          - list of team id's that are part of this conversation
+ labels                      text[]          - labels user has for this conversation
+ label_ids                   uuid[]          - Account label id's for this conversation
+ cmail                       text            - conversation email address, sending email to this address
+                                               posts message in the conversation
+ snooze_interval             bigint          - For how long to snooze conversation in seconds
+ is_premium                  boolean         - At least one member is premium user
+ has_pinboard                boolean         - Conversation has content on pinboard
+ has_taskboard               boolean         - Conversation has conetnt on taskboard
+ has_task_archive            boolean         - Conversation has archived tasks
+ has_email_subject           boolean         - Message entry area should show email subject
+ is_autojoin                 boolean         - Is autojoin enabled
+ autojoin_url                text            - Url that can be used to autojoin conversation
+ client_req_id               uuid            - last req id to change this conversation if changed
+                                               using conversation store api call
+ is_mark_unread              boolean         - true if last read activity was mark unread
+ is_url_preview_disabled     boolean         - Don't show url previews for this message
+ is_disclose                 boolean         - Is disclosed to new joiners
+ is_automute                 boolean         - Is this conversation automatically muted on creation
+ default_topic               text            - Topic to be shown when user has not enterd it
+ default_members             text[]          - list of account id's used to create default topic
+ export_progress             float (o)       - history export progress, between 0 (started) and 1 (ready)
+ export_files                text[] (o)      - list of JSON encoded export files
+ 
+ mk_conv_type                text            - 'cct_list' / 'cct_default' / 'cct_no_mail'
+ is_list                     boolean         - If set to true list behavior is enabled else set to false
+ is_managed                  boolean         - is this conversation managed
+ organisation_id             uuid            - organisation who has claimed management of this conversation
+ pin_cursor                  text            - Cursor for pinboard sync
+ ```  
+##ExternalAccountInfo
+```
+mk_rec_type                 text = 'external_account'
+external_account_id         uuid                        - record id
+account_id                  uuid                        - account owner
+mk_external_account_type    text                        - type of the connected account:
+                                                            trello
+external_id                 text                        - account id in the external system
+email                       text                        - email in the external system
+```
+
+##FileInfo
+```
+mk_rec_type         text = 'file'
+conversation_id     text            - conversation where this file is
+message_nr          bigint          - message to which file is attached
+account_id          text            - Author ID
+attachment_id       text            - key assign by client in message
+file_sha256         text            - file hash, can be used to identify same files
+file_name           text            - file name
+file_url            text            - file url
+file_size           bigint          - File size in bytes
+file_type           text            - server validated file type
+height              integer         - height for pictures
+width               integer         - width for pictures
+is_animated         boolean         - is animated gif
+thumb_url_XX        text            - thumbail url for size XX
+...
+is_deleted          boolean         - filled when file is removed from message
+is_hidden           boolean         - True, if file is an inline image inside of a quote or signature
+deleter_id          text            - User who deleted file. If present message should
+                                      be shown in message flow.
+posted_time         bigint          - unix timestamp in seconds
+orientation         bigint          - file orientation, for images
+sender_name         text            - sender name if from email or hook
+```
+
+##HookInfo
+
+```
+mk_rec_type             text = 'hook'
+conversation_id         uuid            - Conversation
+account_id              uuid            - Creator of the hook
+hook_name               text            - Hooks display name in chat. If not provided
+                                          owners display name is used
+hook_key                text            - Used for removing th hook
+hook_url                text            - Url that can be used to send data into chat
+                                          filled only for the owner
+is_active               boolean         - is this hook currently active or for
+                                          historical data
+mk_hook_type            text            - bitbucket, confluence, github, gitlab, ifttt, jira, newrelic,
+                                          pivotaltracker, plain (generic webhook), sameroom, slack, trello,
+                                          zapier
+avatar_urls             text            - Avatar displayed for hook messages
+outgoing_url            text (o)        - URL that can be used to send out messages from this chat
+                                          filled only for the owner
+outgoing_disabled       boolean (o)     - whether outgoing functionality is disabled or not
+                                          filled only for the owner when outgoing_url is present
+outgoing_disable_reason text (o)        - the reason why outgoing functionality is disabled
+                                          filled only for the owner when outgoing_disabled is true
+```
+
+##LabelInfo
+```
+mk_rec_type text = ‘label’ label text – Label name label_id text – label id index bigint – Label index (-1 -> remove label) mk_label_type text – Label type (user_label/system_label)
+
+system labels cannot be renamed or deleted
+mk_label_subtype text – more finegrained label type
+user - user starred - starred conversations recent - recent inbox conversations muted - muted conversations archived - archived conversatione unread - unread conversations spam - conversations marked as spam team_label - label for team conversations
+mk_label_status text – active / revoved
+removed labels should be dropped from cache
+is_on_left_pane boolean – should label be shown on left pane is_in_recent boolean – are conversations with this label shown
+
+in RECENT section on left pane cannot be changed for system labels
+is_in_muted boolean – are conversations with this label shown
+in MUTED section on left pane cannot be changed for system labels
+sync_inbox_time bigint – inbox time until which synced or 0 if in the end sync_conversation_id text – conversation id inside inbox time for ordering sync_cursor text – cursor for fetching next batch team_id text – team id for team labels
+
+```
+##LastSeenInfo
+```
+mk_rec_type         text = 'lastseen'
+account_id          text            - Who is writing
+activity_time       bigint          - when this activity happend
+```
+##LockInfo
+```
+mk_rec_type         text = 'lock'
+conversation_id     text            - mostly needed for conversation create case
+message_nr          bigint          - message sequence number in message flow
+lock_account_id     text (o)        - who is locking message for editing
+```
+##MailInfo
+```
+mk_rec_type text = ‘mail’
+
+mail_id uuid – mail record id
+
+mail_address text – mail address
+
+smtp_username text – smtp username smtp_host text – smtp host smtp_port bigint – smtp port mk_smtp_connection text – ‘ssl’/’starttls’ smtp_err text = None – smtp error smtp_disable_tls_verify bool
+
+imap_username text – imap username imap_host text – imap host imap_port bigint – imap port mk_imap_connection text – ‘ssl’ / ‘starttls’ imap_err text = None – imap error imap_disable_tls_verify bool
+
+mk_mail_type text – ‘mail’ / ‘gmail’ mk_mail_status text – ‘mail_add’ / ‘mail_failed’ / ‘mail_confirmed’ / ‘mail_removed’
+```
+
+##MessageInfo
+```
+mk_rec_type                 text = 'message'
+mk_msg_sub_type             text            - for future use, more finegrained message type handling
+conversation_id             text            - mostly needed for conversation create case
+message_nr                  bigint          - message sequence number in message flow
+subject                     text            - optional subject used for outgoing emails
+message                     text            - message body - XML.
+marked_text                 text            - used in search result to highlight marked text
+account_id                  text            - Author ID
+mk_message_type             text            - see Classificators
+flow_message_nr             bigint          - In case this message is edit or delete of one of the earlier messages
+revision_message_nr         bigint          - Latest visible revision
+posted_time                 bigint          - unix timestamp in seconds
+pin_weight                  numeric         - may be filled for pin messages
+                                              apply only if filled
+ref_message_nr              bigint          - used by messages that need ot reference other
+                                              messages like unpin message fro example
+edit_account_id             text            - ref to message revisor, normally same as author but
+                                              may be different for pinned messages and files
+edited_time                 bigint          - message edit time
+tags                        text[]          - list of message flags. Possible values:
+                                                pin - message is on pinboard
+                                                is_todo - message is task
+                                                is_done - message is task that has been completed
+                                                is_separator - separator for tasks
+                                                is_archived - message has been archived
+                                                is_deleted - message has been delete
+                                                is_new_sheet - this msg starts new sheet
+                                                is_hidden - do not render message in flow
+                                                is_edited_by_others - someone has edited this message
+lock_account_id             text            - in case pin is locked for editing
+inbox_nr                    bigint          - inbox number of message. Only alerting messages are
+                                              assigned inbox numbers. So last_inbox_nr - inbox_nr
+                                              should give number of alerting messages.
+                                              Negative values point to previous inbox number from
+                                              this message.
+hook_key                    text            - filled if message was sent via hook
+prev_message_nr             bigint          - number of previous visible message
+is_new_sheet                boolean         - start new sheet in message flow
+sender_name                 text            - Name of sender provided by hook or some other source
+assignee_ids                uuid[]          - People assigned to this task or message
+is_url_preview_disabled     boolean         - Don't show url previews for this message
+on_behalf_id                text            - used for emails when email is sent by another user
+marked_text                 text            - used with search. Search marks matches in message text
+mk_message_state            text            - current message state
+section_id                  uuid            - task section id
+is_spam                     boolean         - message is marked as spam
+is_edited_by_others         boolean         - non author has edited the message
+pinned_account_id           uuid            - account that pinned the message
+tasked_account_id           uuid            - account that tasked the message
+```
+##OrgMemberInfo
+```
+mk_rec_type             text = 'org_member'
+organisation_id         uuid
+account_id              uuid
+mk_member_status        text                -- See Business Memeber Status belo
+                                            -- bms_pending - waiting user accept
+                                            -- bms_active - in use or ready for it
+                                            -- bms_removed - released from org
+                                            -- bms_closed - account closed
+                                            -- bms_suspended - suspended by admin
+                                            -- bms_declined - user declined
+                                            -- bms_expired - invitation expired
+is_admin                boolean             -- true if user is admin
+```
+##OrgInfo
+```
+mk_rec_type             text = 'org_header'
+organisation_id         uuid
+organisation_founder_id uuid
+organisation_name       text
+avatar_urls             text
+version_nr              bigint
+status                  text
+trial_time              bigint
+grace_time              bigint
+is_admin                boolean
+is_member               boolean             -- is current user member of the organisation
+invoice_payments        boolean             -- is organisation using invoice payments
+```
+##PreviewInfo
+```
+mk_rec_type         text = 'preview'
+conversation_id     text            - conversation where this file is
+message_nr          bigint          - message to which file is attached
+account_id          text            - Author ID
+attached_url        text            - url being previewed
+title               text            - Title extracted from source
+description         text            - Descrition extracted from source
+file_sha256         text            - file hash, can be used to identify same files
+file_name           text            - file name
+file_url            text            - file url
+file_size           bigint          - File size in bytes
+file_type           text            - server validated file type
+height              integer         - height for pictures
+width               integer         - width for pictures
+is_animated         boolean         - is animated gif
+thumb_url_XX        text            - thumbail url for size XX
+...
+is_deleted          boolean         - filled whne file is removed from message
+deleter_id          text            - User who deleted file. If present message should
+                                      be shown in message flow.                                    
+```
+##ReminderInfo
+```
+mk_rec_type             text = 'reminder'
+reminder_id             uuid
+account_id              uuid
+mk_reminder_type        text
+remind_time             bigint
+expire_time             bigint
+organisation_id         uuid
+is_active               boolean
+creator_id              uuid          -- who submitted reminder if not the author
+```
+##RequestInfo
+```
+mk_rec_type         text = 'request'
+client_req_id       uuid            - Client request has been processed and all data changes
+                                      are commited into database and they have all been
+                                      sent through poll also
+conversation_id     uuid (o)        - Conversation changed by request
+result_message_nr   bigint (o)      - Message that was created or modified with this request
+```
+##SectionInfo
+```
+mk_rec_type             text = 'section'
+conversation_id         uuid                             - Conversation id
+section_id              uuid                             - Section id
+name                    text                             - Section name
+mk_section_type         text                             - Section type
+mk_section_subtype      text                             - Section subtype
+is_deleted              boolean                          - Is section deleted
+weight                  float                            - Section weight
+sync_cursor             text                             - Cursor for sync dependent on mk_section_type
+```
+##SMTPInfo
+```
+mk_rec_type text = ‘smtp’ – smtp_id uuid – SMTP record id smtp_address text – SMTP email address smtp_username text – SMTP username smtp_host text – SMTP host smtp_port bigint – user specified SMTP port (may be None) smtp_connection text – ‘ssl’ / ‘starttls’ mk_smtp_status text – SMTP record status
+
+– smtp_added: record added but not confirmed – smtp_failed: record failed – smtp_confirmed: record confirmed – smtp_removed: record removed
+smtp_status_description text – human readable status descropion
+– most notably used to deliver error messages – when the record has failed
+```
+##TeamInfo
+```
+mk_rec_type         text = 'team'
+team_id             uuid            - Id for team used in conversation heder to map all the teams
+                                      that are part of the conversation
+mk_sync_mode        text            - 'tsm_full' / 'tsm_snapshot' current or snapshot version of
+                                      the team
+team_version_nr     bigint          - Version number of the team record
+team_name           text    (o)     - Name of the team
+members             text[]  (o)     - List of account_id's who are part of the team
+admins              text[]  (o)     - List of account_id's who can change team membership
+is_deleted          boolean         - Whether the team is deleted
+is_tiny             boolean         - Whether it is the full record or not (is_tiny is used to
+                                      to sync limited data to non members)
+is_autojoin         boolean (o)     - Is autojoin enabled
+organisation_id     text    (o)     - Organisation in case of managed teams
+autojoin_url        text            - Autojoin url to join team
+is_managed          boolean         - is this a managed team
+```
+##TransactionInfo
+```
+mk_rec_type                     text = 'transaction'
+organisation_id                 uuid
+transaction_id                  uuid
+amount                          numeric
+transaction_time                bigint
+download_url                    text
+```
+##UploadInfo
+```
+mk_rec_type         text = 'upload'
+status              text                - 'pending, 'success' or 'failure'
+progress            integer             - between 0 and 100, given if status is 'pending'
+conversation_id     text                - conversation related to the upload request
+request_id          text                - upload request id given by server
+upload_id           text                - upload id given by client
+file_type           text                - server validated file type
+name                text                - file name
+size                bigint              - file size
+file_sha256         text                - file hash, can be used to identify same files
+height              integer             - height for pictures
+width               integer             - width for pictures
+is_animated         boolean             - is animated gif
+upload_url          text
+error               text                - error description, given if status is 'failure'
+```
+

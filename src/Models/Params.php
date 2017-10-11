@@ -39,6 +39,15 @@ class Params
             foreach ($value as $param){
                 if(array_key_exists($param, $data))
                 {
+                    if($data[$param] == "true")
+                    {
+                        $data[$param] = true;
+                    }else if($data[$param] == "false")
+                    {
+                        $data[$param] = false;
+                    }
+
+
                     if ($key == "body"){$requestBody[$key] = $data[$param];}
                     else {$requestBody[$key][$param] = $data[$param];}
                 }

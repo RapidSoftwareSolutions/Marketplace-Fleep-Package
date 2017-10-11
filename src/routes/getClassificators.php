@@ -4,7 +4,7 @@ $app->post('/api/Fleep/getClassificators', function ($request, $response) {
 
     $settings = $this->settings;
     $checkRequest = $this->validation;
-    $validateRes = $checkRequest->validate($request, []);
+    $validateRes = $checkRequest->validate($request, ['ticket','tokenId']);
 
     if(!empty($validateRes) && isset($validateRes['callback']) && $validateRes['callback']=='error') {
         return $response->withHeader('Content-type', 'application/json')->withStatus(200)->withJson($validateRes);
@@ -12,10 +12,9 @@ $app->post('/api/Fleep/getClassificators', function ($request, $response) {
         $post_data = $validateRes;
     }
 
-    $requiredParams = [];
+    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId'];
     $optionalParams = [];
-    $bodyParams = [
-    ];
+    $bodyParams = ['query' => ['ticket','tokenId']];
 
     $data = \Models\Params::createParams($requiredParams, $optionalParams, $post_data['args']);
 
@@ -38,7 +37,7 @@ $app->post('/api/Fleep/getClassificators', function ($request, $response) {
 
         if(in_array($resp->getStatusCode(), ['200', '201', '202', '203', '204'])) {
             $result['callback'] = 'success';
-            $result['contextWrites']['to'] = is_array($responseBody) ? $responseBody : json_decode($responseBody);
+            $result['contextWrites']['to'] = $responseBody;
             if(empty($result['contextWrites']['to'])) {
                 $result['contextWrites']['to']['status_msg'] = "Api return no results";
             }

@@ -15,7 +15,7 @@ $app->post('/api/Fleep/sendMessage', function ($request, $response) {
     $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId','conversationId'=>'conversation_id'];
     $optionalParams = ['message'=>'message','fromMessageNumber'=>'from_message_nr','isRetry'=>'is_retry','attachments'=>'attachments'];
     $bodyParams = [
-       'json' => ['ticket','from_message_nr','message_nr','message']
+       'json' => ['ticket','from_message_nr','message_nr','message','attachments']
     ];
 
     $data = \Models\Params::createParams($requiredParams, $optionalParams, $post_data['args']);

@@ -25,7 +25,6 @@ $app->post('/api/Fleep/createAccount', function ($request, $response) {
     $client = $this->httpClient;
     $query_str = "https://fleep.io/api/account/register";
 
-    
 
     $requestParams = \Models\Params::createRequestBody($data, $bodyParams);
     $cookieJar = \GuzzleHttp\Cookie\CookieJar::fromArray([

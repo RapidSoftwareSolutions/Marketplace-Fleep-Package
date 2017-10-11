@@ -4,7 +4,7 @@ $app->post('/api/Fleep/uploadFile', function ($request, $response) {
 
     $settings = $this->settings;
     $checkRequest = $this->validation;
-    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','file']);
+    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','file','imageName','contentType']);
 
     if(!empty($validateRes) && isset($validateRes['callback']) && $validateRes['callback']=='error') {
         return $response->withHeader('Content-type', 'application/json')->withStatus(200)->withJson($validateRes);
@@ -12,7 +12,7 @@ $app->post('/api/Fleep/uploadFile', function ($request, $response) {
         $post_data = $validateRes;
     }
 
-    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId','file'=>'file'];
+    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId','file'=>'file','contentType' => 'contentType','imageName'=>'imageName'];
     $optionalParams = [];
     $bodyParams = [
        'query' => ['ticket']
@@ -32,9 +32,13 @@ $app->post('/api/Fleep/uploadFile', function ($request, $response) {
         'token_id' => $data['tokenId']
     ], 'fleep.io');
     $requestParams['cookies'] = $cookieJar;
-
+    $requestParams['body'] = fopen($data['file'], 'r');
+    if(!empty($data['imageName']) && !empty($data['contentType']))
+    {
+        $requestParams['headers'] = ['Content-Disposition'=>'form-data; name="files"; filename="'.$data['imageName'].'"','Content-Type' => $data['ContentType']];
+    }
     try {
-        $resp = $client->post($query_str, $requestParams);
+        $resp = $client->put($query_str, $requestParams);
         $responseBody = $resp->getBody()->getContents();
 
         if(in_array($resp->getStatusCode(), ['200', '201', '202', '203', '204'])) {

@@ -447,11 +447,24 @@
         {
             "name": "getClassificators",
             "description": "Get list of classificators.",
-            "args": [],
+            "args": [
+                {
+                    "name": "ticket",
+                    "type": "String",
+                    "info": "Must be sent as parameter to all subsequent api calls.",
+                    "required": true
+                },
+                {
+                    "name": "tokenId",
+                    "type": "String",
+                    "info": "Token id from loginAccount endpoint.",
+                    "required": true
+                }
+            ],
             "vendorRequest": {
                 "url": "https:\/\/fleep.io\/api\/classificators",
                 "method": "get",
-                "requestParameters": []
+                "requestParameters": ["ticket","tokenId"]
             },
             "callbacks": [
                 {
@@ -1552,6 +1565,18 @@
                     "name": "ticket",
                     "type": "String",
                     "info": "Must be sent as parameter to all subsequent api calls.",
+                    "required": true
+                },
+                {
+                    "name": "imageName",
+                    "type": "String",
+                    "info": "Name of the image.",
+                    "required": true
+                },
+                {
+                    "name": "contentType",
+                    "type": "String",
+                    "info": "Content-Type of the image.Example - image/jpg.",
                     "required": true
                 },
                 {
@@ -4405,7 +4430,8 @@
                             "ticket",
                             "from_message_nr",
                             "message_nr",
-                            "message"
+                            "message",
+                            "attachments"
                         ]
                     }
                 ]
