@@ -1849,7 +1849,7 @@
                 {
                     "name": "conversationUrlKey",
                     "type": "String",
-                    "info": "Add members to the conversation by id.",
+                    "info": "Either convinfo.conversation_id or last part of convinfo.autojoin_url (KEY).",
                     "required": true,
                     "vendorSchema": {
                         "name": "conv_url_key"
@@ -2335,7 +2335,7 @@
                 {
                     "name": "conversationId",
                     "type": "String",
-                    "info": "Delete conversation by id.",
+                    "info": "Disclose conversation by id.",
                     "required": true,
                     "vendorSchema": {
                         "name": "conversation_id"
@@ -2414,7 +2414,7 @@
                 {
                     "name": "conversationId",
                     "type": "String",
-                    "info": "Delete conversation by id.",
+                    "info": "Disclose conversation by id.",
                     "required": true,
                     "vendorSchema": {
                         "name": "conversation_id"
@@ -2714,7 +2714,7 @@
                 {
                     "name": "conversationId",
                     "type": "String",
-                    "info": "Leave conversation by id.",
+                    "info": "Conversation id.",
                     "required": true,
                     "vendorSchema": {
                         "name": "conversation_id"
@@ -2939,7 +2939,7 @@
                 {
                     "name": "conversationId",
                     "type": "String",
-                    "info": "Leave conversation by id.",
+                    "info": "Conversation id.",
                     "required": true,
                     "vendorSchema": {
                         "name": "conversation_id"
@@ -3005,7 +3005,7 @@
                 {
                     "name": "conversationId",
                     "type": "String",
-                    "info": "Leave conversation by id.",
+                    "info": "Conversation id.",
                     "required": true,
                     "vendorSchema": {
                         "name": "conversation_id"
@@ -3078,7 +3078,7 @@
                 {
                     "name": "conversationId",
                     "type": "String",
-                    "info": "Leave conversation by id.",
+                    "info": "Conversation id.",
                     "required": true,
                     "vendorSchema": {
                         "name": "conversation_id"
@@ -3507,7 +3507,7 @@
                 {
                     "name": "conversationId",
                     "type": "String",
-                    "info": "Leave conversation by id.",
+                    "info": "Conversation id.",
                     "required": true,
                     "vendorSchema": {
                         "name": "conversation_id"
@@ -3589,7 +3589,7 @@
                 {
                     "name": "conversationId",
                     "type": "String",
-                    "info": "Leave conversation by id.",
+                    "info": "Conversation id.",
                     "required": true,
                     "vendorSchema": {
                         "name": "conversation_id"
@@ -3649,7 +3649,7 @@
                 {
                     "name": "conversationId",
                     "type": "String",
-                    "info": "Leave conversation by id.",
+                    "info": "Conversation id.",
                     "required": true,
                     "vendorSchema": {
                         "name": "conversation_id"
@@ -3773,7 +3773,7 @@
                 {
                     "name": "conversationId",
                     "type": "String",
-                    "info": "Leave conversation by id.",
+                    "info": "Conversation id.",
                     "required": true,
                     "vendorSchema": {
                         "name": "conversation_id"
@@ -3833,7 +3833,7 @@
                 {
                     "name": "conversationId",
                     "type": "String",
-                    "info": "Leave conversation by id.",
+                    "info": "Conversation id.",
                     "required": true,
                     "vendorSchema": {
                         "name": "conversation_id"
@@ -3890,7 +3890,7 @@
                 {
                     "name": "conversationId",
                     "type": "String",
-                    "info": "Leave conversation by id.",
+                    "info": "Conversation id.",
                     "required": true,
                     "vendorSchema": {
                         "name": "conversation_id"
@@ -3969,7 +3969,7 @@
                 {
                     "name": "conversationId",
                     "type": "String",
-                    "info": "Leave conversation by id.",
+                    "info": "Conversation id.",
                     "required": true,
                     "vendorSchema": {
                         "name": "conversation_id"
@@ -4048,7 +4048,7 @@
                 {
                     "name": "conversationId",
                     "type": "String",
-                    "info": "Leave conversation by id.",
+                    "info": "Conversation id.",
                     "required": true,
                     "vendorSchema": {
                         "name": "conversation_id"
@@ -4136,7 +4136,7 @@
                 {
                     "name": "conversationId",
                     "type": "String",
-                    "info": "Leave conversation by id.",
+                    "info": "Conversation id.",
                     "required": true,
                     "vendorSchema": {
                         "name": "conversation_id"
@@ -4206,7 +4206,7 @@
                 {
                     "name": "conversationId",
                     "type": "String",
-                    "info": "Leave conversation by id.",
+                    "info": "Conversation id.",
                     "required": true,
                     "vendorSchema": {
                         "name": "conversation_id"
@@ -4298,7 +4298,7 @@
                 {
                     "name": "conversationId",
                     "type": "String",
-                    "info": "Leave conversation by id.",
+                    "info": "Conversation id.",
                     "required": true,
                     "vendorSchema": {
                         "name": "conversation_id"
@@ -4738,7 +4738,7 @@
                 {
                     "name": "conversationId",
                     "type": "String",
-                    "info": "Limit search to one conversation.",
+                    "info": "Conversation id.",
                     "required": false,
                     "vendorSchema": {
                         "name": "conversation_id"

@@ -43,8 +43,15 @@ $app->post('/api/Fleep/loginAccount', function ($request, $response) {
             $token = $resp->getHeader('Set-Cookie');
             if(!empty($token[0]))
             {
-
                 $result['contextWrites']['to']->token_info = $token[0];
+
+                $part = explode(';',$token[0]);
+                if(!empty($part[0]))
+                {
+                    $tokenId = str_replace('token_id=','',$part[0]);
+                    $result['contextWrites']['to']->token_id = $tokenId;
+                }
+
             }
             if(empty($result['contextWrites']['to'])) {
                 $result['contextWrites']['to']['status_msg'] = "Api return no results";

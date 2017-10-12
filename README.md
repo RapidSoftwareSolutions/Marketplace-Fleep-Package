@@ -170,29 +170,6 @@ Set flag for given account that may be used by clients to display or hide conten
 | clientFlag| String| Name of the flag to set or clear.
 | boolValue | String| Clear given flag from account.
 
-## Fleep.smtpConfigure
-Use this method for configure smtp server.
-
-| Field       | Type  | Description
-|-------------|-------|----------
-| ticket      | String| Must be sent as parameter to all subsequent api calls.
-| tokenId     | String| Token id from loginAccount endpoint.
-| smtpId      | String| Smtp id.
-| smtpUsername| String| Smtp username.
-| smtpPassword| String| Smtp password.
-| smtpHost    | String| Smtp host.
-| smtp_port   | String| Smtp port.Set to -1 to remove.
-| isRemoved   | Select| Is removed.Set True to remove.
-| isDefault   | Select| Set True to set as default.
-
-## Fleep.getSmtpList
-Get notification_id for further requests.
-
-| Field  | Type  | Description
-|--------|-------|----------
-| ticket | String| Must be sent as parameter to all subsequent api calls.
-| tokenId| String| Token id from loginAccount endpoint.
-
 ## Fleep.synchronizehronizePinboard
 Synchronize pinboard.
 
@@ -251,6 +228,8 @@ Upload avatar.
 | ticket   | String| Must be sent as parameter to all subsequent api calls.
 | tokenId  | String| Token id from loginAccount endpoint.
 | imageFile| String| Image for avatar.
+| contentType| String| Content-Type of the image.Example - image/jpg.
+| imageName| String| Name of the image.
 
 ## Fleep.listenForNotificationsFromFleep
 Use long poll to listen for notifications from Fleep.
@@ -306,7 +285,7 @@ Add members to the conversation.
 | tokenId          | String| Token id from loginAccount endpoint.
 | conversationId   | String| Add members to the conversation by id.
 | fromMessageNumber| Number| Used to return next batch of changes.
-| emails           | List  | List of email addresses like on email To: line.
+| email           | String  | Email address.
 
 ## Fleep.autojoinConversation
 Autojoin conversation if not member yet.
@@ -315,7 +294,7 @@ Autojoin conversation if not member yet.
 |-------------------|-------|----------
 | ticket            | String| Must be sent as parameter to all subsequent api calls.
 | tokenId           | String| Token id from loginAccount endpoint.
-| conversationUrlKey| String| Add members to the conversation by id.
+| conversationUrlKey| String| Either convinfo.conversation_id or last part of convinfo.autojoin_url (KEY).
 
 ## Fleep.checkPermissions
 Check if account has modification rights on the conversation. Same check is done in all conversation services so this here mainly helps with testing and documentation at first.
@@ -385,7 +364,7 @@ Disclose conversation history to members until given message.
 |------------------|-------|----------
 | ticket           | String| Must be sent as parameter to all subsequent api calls.
 | tokenId          | String| Token id from loginAccount endpoint.
-| conversationId   | String| Delete conversation by id.
+| conversationId   | String| Disclose conversation by id.
 | emails           | List  | List of email addresses like on email To: line.
 | messageNumber    | Number| Disclose up to this message.
 | fromMessageNumber| Number| Used to return next batch of changes.
@@ -397,7 +376,7 @@ Disclose conversation history to members. All content of last membership is disc
 |------------------|-------|----------
 | ticket           | String| Must be sent as parameter to all subsequent api calls.
 | tokenId          | String| Token id from loginAccount endpoint.
-| conversationId   | String| Delete conversation by id.
+| conversationId   | String| Disclose conversation by id.
 | emails           | List  | List of email addresses like on email To: line.
 | fromMessageNumber| Number| Used to return next batch of changes.
 
@@ -447,7 +426,7 @@ Send poke event, used for testing synchronize between clients.
 |------------------|-------|----------
 | ticket           | String| Must be sent as parameter to all subsequent api calls.
 | tokenId          | String| Token id from loginAccount endpoint.
-| conversationId   | String| Leave conversation by id.
+| conversationId   | String| Conversation id.
 | messageNumber    | Number| Disclose up to this message.
 | fromMessageNumber| Number| Used to return next batch of changes.
 | isBgPoke         | Select| Go through bgworker.
@@ -470,7 +449,7 @@ Set conversation alerts.
 |------------------|-------|----------
 | ticket           | String| Must be sent as parameter to all subsequent api calls.
 | tokenId          | String| Token id from loginAccount endpoint.
-| conversationId   | String| Leave conversation by id.
+| conversationId   | String| Conversation id.
 | fromMessageNumber| Number| Used to return next batch of changes.
 | mkAlertLevel     | Select| `never` - do not alert for this conversation;`default` - default behaviour.
 
@@ -481,7 +460,7 @@ Change conversation topic.
 |------------------|-------|----------
 | ticket           | String| Must be sent as parameter to all subsequent api calls.
 | tokenId          | String| Token id from loginAccount endpoint.
-| conversationId   | String| Leave conversation by id.
+| conversationId   | String| Conversation id.
 | fromMessageNumber| Number| Used to return next batch of changes.
 | topic            | String| Conversation topic.
 
@@ -492,7 +471,7 @@ Show writing pen and/or pinboard editing status. This works both ways. Any call 
 |---------------|-------|----------
 | ticket        | String| Must be sent as parameter to all subsequent api calls.
 | tokenId       | String| Token id from loginAccount endpoint.
-| conversationId| String| Leave conversation by id.
+| conversationId| String| Conversation id.
 | messageNumber | Number| Edited flow or pinboard message number.
 | isWriting     | Select| true - writing, false - cancel
 
@@ -503,7 +482,7 @@ Store conversation header fields. Store only fields that have changed. Call only
 |---------------------|-------|----------
 | ticket              | String| Must be sent as parameter to all subsequent api calls.
 | tokenId             | String| Token id from loginAccount endpoint.
-| conversationId      | String| Leave conversation by id.
+| conversationId      | String| Conversation id.
 | readMessageNumber   | Number| New read horizon for conversation.
 | labels              | List  | User labels for conversation.
 | labelIds            | List  | User labels for conversation.
@@ -540,7 +519,7 @@ Synchronize state for single conversation. If used with default values 5 message
 |------------------|-------|----------
 | ticket           | String| Must be sent as parameter to all subsequent api calls.
 | tokenId          | String| Token id from loginAccount endpoint.
-| conversationId   | String| Leave conversation by id.
+| conversationId   | String| Conversation id.
 | fromMessageNumber| Number| Earliest message number client has received or previous messages are read and returned.
 | mkDirection      | Select| mkDirection list.See more in readme.
 
@@ -551,7 +530,7 @@ Synchronize state for single conversation. Used to fetch messages for backward s
 |------------------|-------|----------
 | ticket           | String| Must be sent as parameter to all subsequent api calls.
 | tokenId          | String| Token id from loginAccount endpoint.
-| conversationId   | String| Leave conversation by id.
+| conversationId   | String| Conversation id.
 | fromMessageNumber| Number| Earliest message number client has received or previous messages are read and returned.
 
 ## Fleep.synchronizePinboardForConversation
@@ -561,7 +540,7 @@ Synchronize pinboard for conversation where it was not fully sent with init.
 |------------------|-------|----------
 | ticket           | String| Must be sent as parameter to all subsequent api calls.
 | tokenId          | String| Token id from loginAccount endpoint.
-| conversationId   | String| Leave conversation by id.
+| conversationId   | String| Conversation id.
 | fromMessageNumber| Number| Earliest message number client has received or previous messages are read and returned.
 
 ## Fleep.synchronizeTeamsList
@@ -580,7 +559,7 @@ Bring conversation out of hiding.
 |------------------|-------|----------
 | ticket           | String| Must be sent as parameter to all subsequent api calls.
 | tokenId          | String| Token id from loginAccount endpoint.
-| conversationId   | String| Leave conversation by id.
+| conversationId   | String| Conversation id.
 | fromMessageNumber| Number| Earliest message number client has received or previous messages are read and returned.
 
 ## Fleep.unsubscribeFromConversation
@@ -590,7 +569,7 @@ Unsubscribe from conversation.
 |---------------|-------|----------
 | ticket        | String| Must be sent as parameter to all subsequent api calls.
 | tokenId       | String| Token id from loginAccount endpoint.
-| conversationId| String| Leave conversation by id.
+| conversationId| String| Conversation id.
 | email         | String| Email address to remove from conversation.
 
 ## Fleep.copyMessage
@@ -600,7 +579,7 @@ Copy message from another chat.
 |------------------|-------|----------
 | ticket           | String| Must be sent as parameter to all subsequent api calls.
 | tokenId          | String| Token id from loginAccount endpoint.
-| conversationId   | String| Leave conversation by id.
+| conversationId   | String| Conversation id.
 | messageNumber    | Number| Number of pinned message.
 | toConversationId | String| Destination conversation.
 | fromMessageNumber| Number| Used to return next batch of changes.
@@ -624,10 +603,10 @@ Edit conversation message.
 |------------------|-------|----------
 | ticket           | String| Must be sent as parameter to all subsequent api calls.
 | tokenId          | String| Token id from loginAccount endpoint.
-| conversationId   | String| Leave conversation by id.
+| conversationId   | String| Conversation id.
 | messageNumber    | Number| Number of pinned message.
 | message          | String| Message content.
-| attachments      | List  | List of AttachmentInfo objects to be added.
+| attachments      | List  | List of AttachmentInfo objects(see in readme) to be added.
 | fromMessageNumber| Number| Used to return next batch of changes.
 
 ## Fleep.markMessageAsRead
@@ -637,7 +616,7 @@ Set conversation read horizon for this account. Used when client determines that
 |------------------|-------|----------
 | ticket           | String| Must be sent as parameter to all subsequent api calls.
 | tokenId          | String| Token id from loginAccount endpoint.
-| conversationId   | String| Leave conversation by id.
+| conversationId   | String| Conversation id.
 | messageNumber    | Number| Client read horizon. Last message number that we have shown to user. We update database and send notifications to other connected clients if it is larger than current value in database.
 | fromMessageNumber| Number| Used to return next batch of changes.
 
@@ -648,7 +627,7 @@ Send message to flow.
 |------------------|-------|----------
 | ticket           | String| Must be sent as parameter to all subsequent api calls.
 | tokenId          | String| Token id from loginAccount endpoint.
-| conversationId   | String| Leave conversation by id.
+| conversationId   | String| Conversation id.
 | message          | String| Message content.
 | fromMessageNumber| Number| Used to return next batch of changes.
 | isRetry          | Select| Client is retrying same message send n'th time. Will fail if fromMessageNumber != lastMessageNumber.
@@ -661,7 +640,7 @@ Store message changes whatever they are. Do changes in local cache and send only
 |------------------------|-------|----------
 | ticket                 | String| Must be sent as parameter to all subsequent api calls.
 | tokenId                | String| Token id from loginAccount endpoint.
-| conversationId         | String| Leave conversation by id.
+| conversationId         | String| Conversation id.
 | message                | String| Message content.
 | fromMessageNumber      | Number| Used to return next batch of changes.
 | forwardedConversationId| String| Forwarded conversation id (for forwarding html messages).
@@ -744,7 +723,7 @@ Import contacts into users contactlist. Used for gmail contact import.
 |---------|-------|----------
 | ticket  | String| Must be sent as parameter to all subsequent api calls.
 | tokenId | String| Token id from loginAccount endpoint.
-| contacts| List  | List of ContactImport objects.
+| contacts| List  | List of ContactImport objects(see in readme).
 
 ## Fleep.synchronizeContact
 Returns profile data for given id. Use it to update local client side cache.
@@ -877,6 +856,7 @@ Create webhook for given conversation.
 | fromMessageNumber| Number| Used to return next batch of changes.
 | externalAccountId| String| Id of the external account (see ExternalAccountInfo)only relevant for trello.
 | externalObjectId | String| Id of the object in external system that should be hooked only relevant for trello (board id).
+| conversationId   | String| Conversation by id.
 
 ## Fleep.removeConversationWebhook
 Remove webhook from conversation.
