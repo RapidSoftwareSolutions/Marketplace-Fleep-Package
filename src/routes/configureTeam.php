@@ -20,8 +20,6 @@ $app->post('/api/Fleep/configureTeam', function ($request, $response) {
 
     $data = \Models\Params::createParams($requiredParams, $optionalParams, $post_data['args']);
 
-    
-print_r($data);
 
     $client = $this->httpClient;
     $query_str = "https://fleep.io/api/team/configure/{$data['teamId']}";

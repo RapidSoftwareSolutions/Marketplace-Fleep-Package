@@ -1279,7 +1279,7 @@
                         "create_hook"
                     ],
                     "info": "Type of permissions that external account has granted to Fleep.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "mk_permission_type"
                     }
@@ -2421,15 +2421,10 @@
                     }
                 },
                 {
-                    "name": "emails",
-                    "type": "List",
-                    "structure": {
-                        "name": "email",
-                        "type": "String",
-                        "info": "Single email."
-                    },
-                    "info": "List of email addresses like on email To: line.",
-                    "required": false,
+                    "name": "email",
+                    "type": "String",
+                    "info": "Email address.",
+                    "required": true,
                     "vendorSchema": {
                         "name": "emails"
                     }
