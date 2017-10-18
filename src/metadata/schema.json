@@ -19,7 +19,7 @@
         ]
     },
     "steps": [
-        "Register on the fleep.io",
+        "Register on the https://fleep.io/",
         "Use username and password for getting access ticket and token id in loginAccount endpoint"
     ],
     "events": [
