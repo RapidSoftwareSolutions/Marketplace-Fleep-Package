@@ -13,7 +13,7 @@ $app->post('/api/Fleep/createTeam', function ($request, $response) {
     }
 
     $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId'];
-    $optionalParams = ['teamName'=>'team_name','addEmails'=>'emails','addConversations'=>'conversations','addAccountIds'=>'account_ids','isAutojoin'=>'is_autojoin','isManaged'=>'is_managed'];
+    $optionalParams = ['teamName'=>'team_name','addEmail'=>'emails','addConversations'=>'conversations','addAccountIds'=>'account_ids','isAutojoin'=>'is_autojoin','isManaged'=>'is_managed'];
     $bodyParams = [
        'json' => ['ticket','team_name','emails','account_ids','conversations','is_autojoin','is_managed']
     ];

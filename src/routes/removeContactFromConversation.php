@@ -4,7 +4,7 @@ $app->post('/api/Fleep/removeContactFromConversation', function ($request, $resp
 
     $settings = $this->settings;
     $checkRequest = $this->validation;
-    $validateRes = $checkRequest->validate($request, ['ticket','tokenId']);
+    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','contactsId']);
 
     if(!empty($validateRes) && isset($validateRes['callback']) && $validateRes['callback']=='error') {
         return $response->withHeader('Content-type', 'application/json')->withStatus(200)->withJson($validateRes);
@@ -13,7 +13,7 @@ $app->post('/api/Fleep/removeContactFromConversation', function ($request, $resp
     }
 
     $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId'];
-    $optionalParams = ['contactsIds'=>'contact_id'];
+    $optionalParams = ['contactsId'=>'contact_id'];
     $bodyParams = [
        'json' => ['ticket','contact_id']
     ];

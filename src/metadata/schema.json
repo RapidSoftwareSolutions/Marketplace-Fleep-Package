@@ -1063,7 +1063,8 @@
                 },
                 {
                     "name": "boolValue",
-                    "type": "String",
+                    "type":"Select",
+                    "options":["true","false"],
                     "info": "Clear given flag from account.",
                     "required": false,
                     "vendorSchema": {
@@ -1249,7 +1250,7 @@
         },
         {
             "name": "getTrelloBoardList",
-            "description": "Synchronize taskboard.",
+            "description": "Get Trello board list.",
             "args": [
                 {
                     "name": "ticket",
@@ -1655,7 +1656,8 @@
                 },
                 {
                     "name": "mkAccountStatus",
-                    "type": "String",
+                    "type": "Select",
+                    "options":["new","active","banned","closed"],
                     "info": "`new` - email has been registered but is goodness is unknown;`active` - user has stored a password and can participate;`banned` - user has been banned for some unacceptable activity;`closed` - user has requested this account to be closed;",
                     "required": false,
                     "vendorSchema": {
@@ -2001,17 +2003,12 @@
                     "required": false
                 },
                 {
-                    "name": "emails",
-                    "type": "List",
-                    "structure": {
-                        "name": "email",
-                        "type": "String",
-                        "info": "Single email."
-                    },
-                    "info": "List of email addresses like on email To: line.",
+                    "name": "email",
+                    "type": "String",
+                    "info": "Email address.",
                     "required": false,
                     "vendorSchema": {
-                        "name": "emails"
+                        "name": "email"
                     }
                 },
                 {
@@ -3147,42 +3144,27 @@
                     }
                 },
                 {
-                    "name": "addEmails",
-                    "type": "List",
-                    "structure": {
-                        "name": "email",
-                        "type": "String",
-                        "info": "Single email."
-                    },
-                    "info": "Emails to be added (map to fleep accounts if possible).",
+                    "name": "addEmail",
+                    "type": "String",
+                    "info": "Email to be added (map to fleep accounts if possible).",
                     "required": false,
                     "vendorSchema": {
                         "name": "add_emails"
                     }
                 },
                 {
-                    "name": "removeEmails",
-                    "type": "List",
-                    "structure": {
-                        "name": "email",
-                        "type": "String",
-                        "info": "Single email."
-                    },
-                    "info": "emails to be removed (map to fleep accounts if possible).",
+                    "name": "removeEmail",
+                    "type": "String",
+                    "info": "email to be removed (map to fleep accounts if possible).",
                     "required": false,
                     "vendorSchema": {
                         "name": "remove_emails"
                     }
                 },
                 {
-                    "name": "discloseEmails",
-                    "type": "List",
-                    "structure": {
-                        "name": "email",
-                        "type": "String",
-                        "info": "Single email."
-                    },
-                    "info": "Disclose conversation to these users.",
+                    "name": "discloseEmail",
+                    "type": "String",
+                    "info": "Disclose conversation to these user.",
                     "required": false,
                     "vendorSchema": {
                         "name": "disclose_emails"
@@ -3538,7 +3520,7 @@
                         "ic_tasks",
                         "<null>"
                     ],
-                    "info": "mkDirection list.See more in readme.",
+                    "info": "mkDirection select.See more in readme.",
                     "required": false,
                     "vendorSchema": {
                         "name": "mk_direction"
@@ -3724,7 +3706,7 @@
                         "info": "Single team id."
                     },
                     "info": "Add teams to conversation.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "team_ids"
                     }
@@ -3843,7 +3825,7 @@
                     "name": "email",
                     "type": "String",
                     "info": "Email address to remove from conversation.",
-                    "required": false
+                    "required": true
                 }
             ],
             "vendorRequest": {
@@ -3918,7 +3900,7 @@
                     "name": "fromMessageNumber",
                     "type": "Number",
                     "info": "Used to return next batch of changes.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "from_message_nr"
                     }
@@ -4730,7 +4712,7 @@
                         "info": "Keyword for search."
                     },
                     "info": "Query search for suggest words.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "format": "toString:{ }"
                     }
@@ -5063,7 +5045,7 @@
         },
         {
             "name": "synchronizeAllContact",
-            "description": "Returns profile data for given list of id\u2019s. Use it to update local client side cache.",
+            "description": "Returns profile data for all. Use it to update local client side cache.",
             "args": [
                 {
                     "name": "ticket",
@@ -5198,15 +5180,10 @@
                     "required": true
                 },
                 {
-                    "name": "contactsIds",
-                    "type": "List",
-                    "structure": {
-                        "name": "contactId",
-                        "type": "JSON",
-                        "info": "Single contact id."
-                    },
-                    "info": "List of account_ids to synchronize.",
-                    "required": false,
+                    "name": "contactId",
+                    "type": "String",
+                    "info": "Account id to synchronize.",
+                    "required": true,
                     "vendorSchema": {
                         "name": "contact_id"
                     }
@@ -5256,6 +5233,18 @@
                     "name": "file",
                     "type": "File",
                     "info": "Input field for files.",
+                    "required": true
+                },
+                {
+                    "name": "fileName",
+                    "type": "String",
+                    "info": "Name of the file.",
+                    "required": true
+                },
+                {
+                    "name": "contentType",
+                    "type": "String",
+                    "info": "Content-Type of the file.Example - image/jpg.",
                     "required": true
                 }
             ],
@@ -6015,28 +6004,18 @@
                     }
                 },
                 {
-                    "name": "addEmails",
-                    "type": "List",
-                    "structure": {
-                        "name": "email",
-                        "type": "String",
-                        "info": "Single email."
-                    },
-                    "info": "List of emails to be added to team.",
+                    "name": "addEmail",
+                    "type": "String",
+                    "info": "Email to be added to team.",
                     "required": false,
                     "vendorSchema": {
                         "name": "add_emails"
                     }
                 },
                 {
-                    "name": "removeEmails",
-                    "type": "List",
-                    "structure": {
-                        "name": "email",
-                        "type": "String",
-                        "info": "Single email."
-                    },
-                    "info": "List of emails to be removed from team.",
+                    "name": "removeEmail",
+                    "type": "String",
+                    "info": "Email to be removed from team.",
                     "required": false,
                     "vendorSchema": {
                         "name": "remove_emails"
@@ -6228,14 +6207,9 @@
                     }
                 },
                 {
-                    "name": "addEmails",
-                    "type": "List",
-                    "structure": {
-                        "name": "email",
-                        "type": "String",
-                        "info": "Single email."
-                    },
-                    "info": "List of emails to be added to team.",
+                    "name": "addEmail",
+                    "type": "String",
+                    "info": "Email to be added to team.",
                     "required": false,
                     "vendorSchema": {
                         "name": "emails"
@@ -6403,7 +6377,7 @@
                     "name": "conversationId",
                     "type": "String",
                     "info": "ConversationId to prove team access.",
-                    "required": false,
+                    "required": true,
                     "vendorSchema": {
                         "name": "conversation_id"
                     }

@@ -4,7 +4,7 @@ $app->post('/api/Fleep/uploadFile', function ($request, $response) {
 
     $settings = $this->settings;
     $checkRequest = $this->validation;
-    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','file','imageName','contentType']);
+    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','file','fileName','contentType']);
 
     if(!empty($validateRes) && isset($validateRes['callback']) && $validateRes['callback']=='error') {
         return $response->withHeader('Content-type', 'application/json')->withStatus(200)->withJson($validateRes);
@@ -12,7 +12,7 @@ $app->post('/api/Fleep/uploadFile', function ($request, $response) {
         $post_data = $validateRes;
     }
 
-    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId','file'=>'file','contentType' => 'contentType','imageName'=>'imageName'];
+    $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId','file'=>'file','contentType' => 'contentType','fileName'=>'imageName'];
     $optionalParams = [];
     $bodyParams = [
        'query' => ['ticket']

@@ -33,6 +33,11 @@ $app->post('/api/Fleep/describeFofContact', function ($request, $response) {
     ], 'fleep.io');
     $requestParams['cookies'] = $cookieJar;
 
+    if(!$data['phoneNumber'])
+    {
+        $requestParams['json']['phone_nr'] = (String) $requestParams['json']['phone_nr'];
+    }
+
     try {
         $resp = $client->post($query_str, $requestParams);
         $responseBody = $resp->getBody()->getContents();

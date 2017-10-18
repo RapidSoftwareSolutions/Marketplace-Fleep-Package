@@ -13,7 +13,7 @@ $app->post('/api/Fleep/createConversation', function ($request, $response) {
     }
 
     $requiredParams = ['ticket'=>'ticket','tokenId'=>'tokenId'];
-    $optionalParams = ['topic'=>'topic','emails'=>'emails','subject'=>'subject','message'=>'message','attachments'=>'attachments','isInvite'=>'is_invite','isAutojoin'=>'is_autojoin','isDisclose'=>'is_disclose','fwdConversationId'=>'fwd_conversation_id','teamIds'=>'team_ids','accountIds'=>'account_ids','forkConversationId'=>'fork_conversation_id','isList'=>'is_list','isManaged'=>'is_managed','mkConvType'=>'mk_conv_type'];
+    $optionalParams = ['topic'=>'topic','email'=>'emails','subject'=>'subject','message'=>'message','attachments'=>'attachments','isInvite'=>'is_invite','isAutojoin'=>'is_autojoin','isDisclose'=>'is_disclose','fwdConversationId'=>'fwd_conversation_id','teamIds'=>'team_ids','accountIds'=>'account_ids','forkConversationId'=>'fork_conversation_id','isList'=>'is_list','isManaged'=>'is_managed','mkConvType'=>'mk_conv_type'];
     $bodyParams = [
        'json' => ['ticket','topic','emails','subject','message','attachments','is_invite','is_autojoin','is_disclose','fwd_conversation_id','team_ids','account_ids','fork_conversation_id','is_list','is_managed','mk_conv_type']
     ];

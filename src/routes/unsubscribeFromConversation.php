@@ -4,7 +4,7 @@ $app->post('/api/Fleep/unsubscribeFromConversation', function ($request, $respon
 
     $settings = $this->settings;
     $checkRequest = $this->validation;
-    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','conversationId']);
+    $validateRes = $checkRequest->validate($request, ['ticket','tokenId','conversationId','email']);
 
     if(!empty($validateRes) && isset($validateRes['callback']) && $validateRes['callback']=='error') {
         return $response->withHeader('Content-type', 'application/json')->withStatus(200)->withJson($validateRes);

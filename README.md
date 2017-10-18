@@ -79,6 +79,60 @@ Get list of classificators.
 
 No arguments.
 
+#### Response
+mk_account_status:
+```Describes the state of the account.
+   
+   new - email has been registered but is goodness is unknown
+   active - user has stored a password and can participate
+   banned - user has been banned for some unacceptable activity
+   closed - user has requested this account to be closed
+   ```
+mk_message_type:
+```
+Different messages that may come up in our message flow
+
+text - text message written by user
+email - message send over email
+separator - taskboard separator
+create - conversation created.
+add - listed members were added to the conversation. Message: members = <list of account_id's>
+leave - when member left the conversation
+kick - when member is removed from conversation
+topic - when someone changed conversation topic. Message:  topic = <topic>
+alerts - alert level (never, default)
+disclose - user disclosed previous content to members
+hook - user created hook for the conversation
+unhook - user dropped hook from the conversation
+add_team - new team added to the conversation
+kick_team - team removed from the conversation
+hangout - hangout video call was created
+separator - taskboard separator
+replace - member replcaced email with alternate email
+share - auto join url was enabled for conversation
+unshare - auto join url was disabled for conversation
+autojoin - member used auto join url to join
+delfile - obsolete file delete message
+```
+
+mk_alert_level:
+
+```
+Alerting level for conversation.
+
+never - do not alert for this conversation
+default - default behaviour
+```
+mk_email_interval:
+
+```
+Notification emails for the user.
+
+default - default behaviour is email participation
+daily - email notifications only
+never - no emails at all ever
+```
+
 ## Fleep.editAccountSettings
 Change account related settings.
 
@@ -194,7 +248,7 @@ Synchronize taskboard.
 | taskLimit     | Number| Tasks to synchronize in one batch (between 1 and 100).
 
 ## Fleep.getTrelloBoardList
-Synchronize taskboard.
+Get Trello board list.
 
 | Field            | Type  | Description
 |------------------|-------|----------
@@ -322,7 +376,7 @@ Create new conversation.
 | ticket            | String| Must be sent as parameter to all subsequent api calls.
 | tokenId           | String| Token id from loginAccount endpoint.
 | topic             | String| Conversation topic.
-| emails            | List  | List of email addresses like on email To: line.
+| email           | String  | email address.
 | subject           | String| Subject for first message.
 | message           | String| Initial message into the conversation.
 | attachments       | List  | List of AttachmentInfos to be added to conversation.
@@ -489,9 +543,9 @@ Store conversation header fields. Store only fields that have changed. Call only
 | topic               | String| Shared topic for conversation.
 | mkAlertLevel        | Select| `never` - do not alert for this conversation;`default` - default behaviour.
 | snoozeInterval      | String| For how long to snooze conversation in seconds.
-| addEmails           | List  | Emails to be added (map to fleep accounts if possible).
-| removeEmails        | List  | emails to be removed (map to fleep accounts if possible).
-| discloseEmails      | List  | Disclose conversation to these users.
+| addEmail           | String  | Email to be added (map to fleep accounts if possible).
+| removeEmail        | String  | Email to be removed (map to fleep accounts if possible).
+| discloseEmail      | String  | Disclose conversation to these user.
 | addAccountIds       | List  | Account ids to be added to the conversation.
 | kickAccountIds      | List  | Account ids to be removed from the conversation with no access to history - only useable with managed conversations.
 | removeAccountIds    | List  | Account ids to be removed from the conversation.
@@ -521,7 +575,22 @@ Synchronize state for single conversation. If used with default values 5 message
 | tokenId          | String| Token id from loginAccount endpoint.
 | conversationId   | String| Conversation id.
 | fromMessageNumber| Number| Earliest message number client has received or previous messages are read and returned.
-| mkDirection      | Select| mkDirection list.See more in readme.
+| mkDirection      | Select| mkDirection select.
+
+##### Params list for mkDirection field.
+
+1. ic_header - return only conversation header.
+2. ic_tiny - do minimal init conversation returns only inbox message and header.
+3. ic_full - do full initi conversation returns inbox message and several messages before and after current read horizon and several pins and several files.
+4. ic_flow - get flow fragment returns several messages before and after given from_message_nr or current read horizon if from message nr not given.
+5. ic_end - get flow fragment from the end of all available content.
+6. ic_backward - get flow fragment before given message.
+7. ic_forward - get flow fragment after given message  only visible messages are returned so not suitable for syncing cached conversation (edits will be lost).
+8. ic_files - get only messages with files.
+9. ic_pinboard - get only shared messages.
+10. ic_tasks -get only archeved task messages.
+11.  <null> - default behaviour get sequential messages forward. Returns all flow messages even non visible ones like edits of older messages.
+
 
 ## Fleep.synchronizeBackwardForConversation
 Synchronize state for single conversation. Used to fetch messages for backward scroll.
@@ -723,7 +792,7 @@ Import contacts into users contactlist. Used for gmail contact import.
 |---------|-------|----------
 | ticket  | String| Must be sent as parameter to all subsequent api calls.
 | tokenId | String| Token id from loginAccount endpoint.
-| contacts| List  | List of ContactImport objects(see in readme).
+| contacts| List  | List of ContactImport objects(see ContactInfo output below).
 
 ## Fleep.synchronizeContact
 Returns profile data for given id. Use it to update local client side cache.
@@ -744,7 +813,7 @@ Synchronize last seen time for requested contacts.
 | contactIds| List  | List of account ids to synchronize.
 
 ## Fleep.synchronizeAllContact
-Returns profile data for given list of id’s. Use it to update local client side cache.
+Returns profile data for all. Use it to update local client side cache.
 
 | Field       | Type  | Description
 |-------------|-------|----------
@@ -769,7 +838,7 @@ Remove contact from conversation list dialog suggestions.
 |------------|-------|----------
 | ticket     | String| Must be sent as parameter to all subsequent api calls.
 | tokenId    | String| Token id from loginAccount endpoint.
-| contactsIds| List  | List of account_ids to synchronize.
+| contactsId | String  | Account id to synchronize.
 
 ## Fleep.uploadFile
 Upload one or more files. File upload url-s can be used in message API calls storeMessage and sendMessage as attachments parameter.
@@ -779,6 +848,8 @@ Upload one or more files. File upload url-s can be used in message API calls sto
 | ticket | String| Must be sent as parameter to all subsequent api calls.
 | tokenId| String| Token id from loginAccount endpoint.
 | file   | File  | Input field for files.
+| contentType| String| Content-Type of the file.Example - image/jpg.
+| fileName| String| Name of the file.Example - file.jpeg
 
 ## Fleep.uploadExternalFile
 Add file into Fleep from an external source. Maximum allowed file size is 1GB. Upload request is put into queue and processed by a background job. Upload progress events are sent to the client during the upload process.
@@ -895,8 +966,8 @@ Add or remove members and change team name.
 | ticket             | String| Must be sent as parameter to all subsequent api calls.
 | tokenId            | String| Token id from loginAccount endpoint.
 | team_name          | String| Team name.
-| addEmails          | List  | List of emails to be added to team.
-| removeEmails       | List  | List of emails to be removed from team.
+| addEmail          | String  | Email to be added to team.
+| removeEmail       | String  | Email to be removed from team.
 | addConversations   | List  | List of conversation id's to add.
 | removeConversations| List  | List of conversation id's to remove.
 | addAccountIds      | List  | List of account ids to be added to team.
@@ -915,7 +986,7 @@ Create team with given members and conversations.
 | ticket          | String| Must be sent as parameter to all subsequent api calls.
 | tokenId         | String| Token id from loginAccount endpoint.
 | teamName        | String| Team name.
-| addEmails       | List  | List of emails to be added to team.
+| addEmails       | String  | Email to be added to team.
 | addConversations| List  | List of conversation id's to add.
 | addAccountIds   | List  | List of account ids to be added to team.
 | isAutojoin      | Select| Is autojoin enabled.

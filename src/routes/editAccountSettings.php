@@ -20,7 +20,7 @@ $app->post('/api/Fleep/editAccountSettings', function ($request, $response) {
 
     $data = \Models\Params::createParams($requiredParams, $optionalParams, $post_data['args']);
 
-    
+
 
     $client = $this->httpClient;
     $query_str = "https://fleep.io/api/account/configure";
@@ -32,6 +32,12 @@ $app->post('/api/Fleep/editAccountSettings', function ($request, $response) {
         'token_id' => $data['tokenId']
     ], 'fleep.io');
     $requestParams['cookies'] = $cookieJar;
+
+    if(!$data['phoneNumber'])
+    {
+        $requestParams['json']['phone_nr'] = (String) $requestParams['json']['phone_nr'];
+    }
+
 
     try {
         $resp = $client->post($query_str, $requestParams);
