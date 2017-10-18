@@ -77,7 +77,10 @@ Informs backend that given reminder has been show to the user.
 ## Fleep.getClassificators
 Get list of classificators.
 
-No arguments.
+| Field     | Type  | Description
+|-----------|-------|----------
+| ticket    | String| Must be sent as parameter to all subsequent api calls.
+| tokenId   | String| Token id from loginAccount endpoint.
 
 #### Response
 mk_account_status:
